@@ -1,14 +1,24 @@
 package main;
 import model.Book;
+import service.LibraryService;
 
 public class Main {
     public static void main(String[] args){
 
-        Book book1 = new Book(1, "Java Basics", "John Doe");
-        Book book2 = new Book(2, "OOP Concepts", "Jane Smith");
+        //Create library service
+        LibraryService library = new LibraryService();
 
-        book1.displayBook();
-        book2.displayBook();
+        //Create Books
+        Book book1 = new Book(1, "Java Basics", "John Doe");
+        Book book2 = new Book(2, "Clean Code", "Robert Martin");
+
+        //Add Books
+        library.addBook(book1);
+        library.addBook(book2);
+
+        //View Books
+        System.out.println("\nLibrary Books:");
+        library.viewBooks();
 
     }
 }
