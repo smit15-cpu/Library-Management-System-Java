@@ -17,7 +17,19 @@ public class Main {
         library.addBook(book2);
 
         //View Books
-        System.out.println("\nLibrary Books:");
+        System.out.println("\nAll Books:");
+        library.viewBooks();
+
+        System.out.println("\nIssuing Book ID 1:");
+        library.issueBook(1);
+
+        System.out.println("\nBooks After Issuing:");
+        library.viewBooks();
+
+        System.out.println("\nReturning Book ID 1:");
+        library.returnBook(1);
+
+        System.out.println("\nFinal Library Status:");
         library.viewBooks();
 
     }

@@ -24,4 +24,50 @@ public class LibraryService {
             book.displayBook();
         }
     }
+
+    // Search book by ID
+    public Book searchBookById(int id){
+
+        for(Book book : books){
+            if(book.getId() == id){
+                return book;
+            }
+        }
+        return null;
+    }
+
+    // Issue Book
+    public void issueBook(int id){
+
+        Book book = searchBookById(id);
+
+        if(book == null){
+            System.out.println("Book not found");
+            return;
+        }
+
+        if(book.isIssued()){
+            System.out.println("Book is already issued.");
+        }else {
+            book.setIssued(true);
+            System.out.println(book.getTitle() + " issued successfully.");
+        }
+    }
+
+    //Return Book
+    public void returnBook(int id){
+        Book book = searchBookById(id);
+
+        if(book == null){
+            System.out.println("Book not found.");
+            return;
+        }
+
+        if(!book.isIssued()){
+            System.out.println("Book was not issued.");
+        }else {
+            book.setIssued(false);
+            System.out.print(book.getTitle() + "returned successfully");
+        }
+    }
 }
