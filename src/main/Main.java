@@ -1,6 +1,7 @@
 package main;
 import model.Book;
 import service.LibraryService;
+import database.DBConnection;
 
 public class Main {
     public static void main(String[] args){
@@ -9,17 +10,18 @@ public class Main {
         LibraryService library = new LibraryService();
 
         //Create Books
-        Book book1 = new Book(1, "Java Basics", "John Doe");
-        Book book2 = new Book(2, "Clean Code", "Robert Martin");
+        Book book1 = new Book("Java Basics", "John Doe");
+        Book book2 = new Book("Clean Code", "Robert Martin");
 
         //Add Books
         library.addBook(book1);
         library.addBook(book2);
 
-        //View Books
+
+       // View Books
         System.out.println("\nAll Books:");
         library.viewBooks();
-
+/*
         System.out.println("\nIssuing Book ID 1:");
         library.issueBook(1);
 
@@ -31,6 +33,8 @@ public class Main {
 
         System.out.println("\nFinal Library Status:");
         library.viewBooks();
+*/
+        DBConnection.getConnection();
 
     }
 }

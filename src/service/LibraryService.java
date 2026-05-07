@@ -1,5 +1,11 @@
 package service;
+import database.DBConnection;
 import model.Book;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class LibraryService {
@@ -8,20 +14,58 @@ public class LibraryService {
     private ArrayList<Book> books = new ArrayList<>();
 
     //Add Books
-    public void addBook(Book book){
-        books.add(book);
-        System.out.println(book.getTitle() + "added successfully.");
+    public void addBook(Book book) {
+
+        Connection conn = DBConnection.getConnection();
+
+        if (conn == null) {
+            System.out.println("No DB connection");
+            return;
+        }
+
+        String query = "INSERT INTO books (title, author, isIssued) VALUES (?, ?, ?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setString(1, book.getTitle());
+            ps.setString(2, book.getAuthor());
+            ps.setBoolean(3, book.isIssued());
+
+            ps.executeUpdate();
+
+            System.out.println("Book added successfully!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //View all books
     public void viewBooks() {
-        if(books.isEmpty()){
-            System.out.println("No books available.");
-            return;
-        }
+        String query = "SELECT * FROM books";
 
-        for (Book book : books){
-            book.displayBook();
+        try(Connection conn = DBConnection.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query)){
+
+            System.out.println("\n Library Books:");
+
+            while (rs.next()){
+
+                int id = rs.getInt("id");
+                String title = rs.getString("title");
+                String author = rs.getString("author");
+                boolean isIssued = rs.getBoolean("isIssued");
+
+                System.out.println(
+                        "ID: " + id +
+                        ", Title: " + title +
+                        ", Author: " + author +
+                        ", Issued: " + isIssued
+                );
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 

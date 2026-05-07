@@ -8,8 +8,7 @@ public class Book {
     private boolean isIssued;
 
     //Constructor
-    public Book(int id, String title, String author){
-        this.id = id;
+    public Book(String title, String author){
         this.title = title;
         this.author = author;
         this.isIssued = false;
