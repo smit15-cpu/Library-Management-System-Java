@@ -2,39 +2,75 @@ package main;
 import model.Book;
 import service.LibraryService;
 import database.DBConnection;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
 
-        //Create library service
         LibraryService library = new LibraryService();
+        Scanner sc = new Scanner(System.in);
 
-        //Create Books
-        Book book1 = new Book("Java Basics", "John Doe");
-        Book book2 = new Book("Clean Code", "Robert Martin");
+        while (true) {
 
-        //Add Books
-        library.addBook(book1);
-        library.addBook(book2);
+            System.out.println("\n===== LIBRARY MENU =====");
+            System.out.println("1. Add Book");
+            System.out.println("2. View Books");
+            System.out.println("3. Issue Book");
+            System.out.println("4. Return Book");
+            System.out.println("5. Exit");
+            System.out.println("6. Search Book");
+            System.out.print("Enter choice: ");
+
+            int choice = sc.nextInt();
+            sc.nextLine(); // important fix
+
+            switch (choice) {
+
+                case 1:
+                    System.out.print("Enter title: ");
+                    String title = sc.nextLine().trim();
+
+                    System.out.print("Enter author: ");
+                    String author = sc.nextLine().trim();
+
+                    if (title.isEmpty() || author.isEmpty()) {
+                        System.out.println("Title and Author cannot be empty!");
+                        break;
+                    }
 
 
-       // View Books
-        System.out.println("\nAll Books:");
-        library.viewBooks();
-/*
-        System.out.println("\nIssuing Book ID 1:");
-        library.issueBook(1);
+                    library.addBook(new Book(title, author));
+                    break;
 
-        System.out.println("\nBooks After Issuing:");
-        library.viewBooks();
+                case 2:
+                    library.viewBooks();
+                    break;
 
-        System.out.println("\nReturning Book ID 1:");
-        library.returnBook(1);
+                case 3:
+                    System.out.print("Enter book ID to issue: ");
+                    int issueId = sc.nextInt();
+                    library.issueBook(issueId);
+                    break;
 
-        System.out.println("\nFinal Library Status:");
-        library.viewBooks();
-*/
-        DBConnection.getConnection();
+                case 4:
+                    System.out.print("Enter book ID to return: ");
+                    int returnId = sc.nextInt();
+                    library.returnBook(returnId);
+                    break;
 
+                case 5:
+                    System.out.println("Exiting... Bye!");
+                    System.exit(0);
+
+                case 6:
+                    System.out.print("Enter book ID to search: ");
+                    int searchId = sc.nextInt();
+                    library.searchBook(searchId);
+                    break;
+
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        }
     }
 }

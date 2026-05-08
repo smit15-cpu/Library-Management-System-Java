@@ -1,17 +1,25 @@
-# Library Management System (Java)
+# Library Management System (Java + MySQL)
 
-This is a beginner-friendly Library Management System built using Java.
-
-## Features (Planned)
-- Add / remove books
-- Issue & return system
-- User management
-- Fine calculation
-- Database integration (MySQL)
+## Features
+- Add Book (with validation)
+- View all books
+- Issue book
+- Return book
+- Search book by ID
+- MySQL database integration
+- JDBC connectivity
 
 ## Tech Stack
 - Java
-- Git & GitHub
+- MySQL
+- JDBC
+
+## Concepts Used
+- OOP (Encapsulation)
+- CRUD operations
+- Database connectivity
+- PreparedStatement
+- Exception handling
 
 ## Status
-🚧 Project Started
+Completed 

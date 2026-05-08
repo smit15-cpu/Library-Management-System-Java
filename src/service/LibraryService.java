@@ -69,49 +69,70 @@ public class LibraryService {
         }
     }
 
-    // Search book by ID
-    public Book searchBookById(int id){
-
-        for(Book book : books){
-            if(book.getId() == id){
-                return book;
-            }
-        }
-        return null;
-    }
-
     // Issue Book
     public void issueBook(int id){
 
-        Book book = searchBookById(id);
+        String query = "UPDATE books SET isIssued = true WHERE id = ?";
 
-        if(book == null){
-            System.out.println("Book not found");
-            return;
-        }
+        try(Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query)){
 
-        if(book.isIssued()){
-            System.out.println("Book is already issued.");
-        }else {
-            book.setIssued(true);
-            System.out.println(book.getTitle() + " issued successfully.");
+            ps.setInt(1,id);
+
+            int rows = ps.executeUpdate();
+
+            if(rows > 0){
+                System.out.println("Book issued successfully!");
+            } else {
+                System.out.println("Book not found!");
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 
     //Return Book
-    public void returnBook(int id){
-        Book book = searchBookById(id);
+    public void returnBook(int id) {
+        String query = "UPDATE books SET isIssued = false WHERE id = ?";
 
-        if(book == null){
-            System.out.println("Book not found.");
-            return;
+        try(Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query)){
+            ps.setInt(1, id);
+
+            int rows = ps.executeUpdate();
+
+            if(rows > 0){
+                System.out.println("Books returned successfully!");
+            } else {
+                System.out.println("Book not found!");
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
+    }
 
-        if(!book.isIssued()){
-            System.out.println("Book was not issued.");
-        }else {
-            book.setIssued(false);
-            System.out.print(book.getTitle() + "returned successfully");
+    public void searchBook(int id){
+        String query = "SELECT * FROM books WHERE id = ?";
+
+        try(Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                System.out.println("\nBook Found");
+                System.out.println("ID: " + rs.getInt("id"));
+                System.out.println("Title: " + rs.getString("title"));
+                System.out.println("Author: " + rs.getString("author"));
+                System.out.println("Issued: " + rs.getBoolean("isIssued"));
+            } else {
+                System.out.println("Book not found!");
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 }
